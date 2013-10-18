@@ -6,7 +6,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import pl.stupaq.hadoop.relational.Tuple;
 import pl.stupaq.hadoop.relational.Utils;
-import pl.stupaq.hadoop.relational.join.Joiner.MarkedTuple;
+import pl.stupaq.hadoop.relational.join.Join.MarkedTuple;
 
 import java.io.IOException;
 import java.util.Collections;

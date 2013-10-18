@@ -5,7 +5,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import pl.stupaq.hadoop.relational.Tuple;
-import pl.stupaq.hadoop.relational.join.Joiner.MarkedTuple;
+import pl.stupaq.hadoop.relational.join.Join.MarkedTuple;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -13,33 +13,31 @@ import org.junit.BeforeClass;
 
 import java.io.IOException;
 
-public class MRClusterTestUtil {
+public abstract class MRClusterTestUtil {
   protected static final Log LOG = LogFactory.getLog(JoinerMRClusterTest.class);
   protected DistributedFileSystem dfs;
   protected MiniMRCluster mrCluster;
-  private MiniDFSCluster dfsCluster;
+  protected MiniDFSCluster dfsCluster;
 
   @BeforeClass
-  public static void setUpClass() {
+  public static void setUpClusterClass() {
     String buildDir = System.getProperty("project.build.directory");
-    System.setProperty("hadoop.log.dir", buildDir + "test/logs");
+    if (buildDir == null) {
+      buildDir = "build";
+    }
+    System.setProperty("hadoop.log.dir", buildDir + "/test/logs");
   }
 
   @Before
-  public void setUp() throws IOException {
+  public final void setUpCluster() throws IOException {
     Configuration conf = new Configuration();
     dfsCluster = new MiniDFSCluster(conf, 1, true, null);
-    try {
-      dfs = (DistributedFileSystem) dfsCluster.getFileSystem();
-      mrCluster = new MiniMRCluster(1, dfs.getUri().toString(), 1);
-    } catch (IOException e) {
-      tearDown();
-      throw e;
-    }
+    dfs = (DistributedFileSystem) dfsCluster.getFileSystem();
+    mrCluster = new MiniMRCluster(1, dfs.getUri().toString(), 1);
   }
 
   @After
-  public void tearDown() {
+  public final void tearDownCluster() {
     IOUtils.cleanup(LOG, dfs);
     if (mrCluster != null) {
       mrCluster.shutdown();

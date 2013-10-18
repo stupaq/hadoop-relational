@@ -9,7 +9,10 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
 import pl.stupaq.hadoop.relational.Tuple;
 
@@ -17,8 +20,19 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class Joiner implements Tool {
+public class Join implements Tool {
   private Configuration conf;
+
+  public static void main(String[] args) throws Exception {
+    try {
+      Configuration conf = new Configuration();
+      String[] remainingArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+      ToolRunner.run(conf, new Join(), remainingArgs);
+    } catch (Throwable t) {
+      System.err.println(StringUtils.stringifyException(t));
+      throw t;
+    }
+  }
 
   @Override
   public int run(String[] args) throws Exception {
@@ -31,7 +45,7 @@ public class Joiner implements Tool {
 
     // Setup job
     Job job = Job.getInstance(conf);
-    job.setJarByClass(Joiner.class);
+    job.setJarByClass(Join.class);
 
     MultipleInputs.addInputPath(job, leftRelationPath, TextInputFormat.class, JoinMapperLeft.class);
     MultipleInputs
@@ -96,5 +110,4 @@ public class Joiner implements Tool {
   public void setConf(Configuration entries) {
     this.conf = entries;
   }
-
 }
