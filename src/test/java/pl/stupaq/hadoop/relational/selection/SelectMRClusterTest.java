@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
 
 public class SelectMRClusterTest extends MRClusterTestUtil {
   private static final Path INPUT = new Path("input");
+  private static final Path JOB_OUTPUT = new Path("/tmp/job_output");
   private static final Path OUTPUT = new Path("output");
-  private static final Path MERGED_OUTPUT = new Path("merged_output");
 
   @Before
   public void setUp() throws IOException {
@@ -35,11 +35,11 @@ public class SelectMRClusterTest extends MRClusterTestUtil {
   public void testRun() throws Exception {
     Configuration conf = mrCluster.createJobConf();
     String[] args =
-        new String[]{INPUT.toString(), OUTPUT.toString(), Equals.class.getName(), "1,2,3"};
+        new String[]{INPUT.toString(), JOB_OUTPUT.toString(), Equals.class.getName(), "1,2,3"};
     assertEquals("Job failed!", 0, ToolRunner.run(conf, new Selection(), args));
-    assertTrue(dfs.exists(OUTPUT));
-    FileUtil.copyMerge(dfs, OUTPUT, dfs, MERGED_OUTPUT, false, conf, null);
-    try (Reader reader = new InputStreamReader(dfs.open(MERGED_OUTPUT))) {
+    assertTrue(dfs.exists(JOB_OUTPUT));
+    FileUtil.copyMerge(dfs, JOB_OUTPUT, dfs, OUTPUT, false, conf, null);
+    try (Reader reader = new InputStreamReader(dfs.open(OUTPUT))) {
       char[] data = new char[1024];
       reader.read(data);
       assertEquals("1,2,3\n1,2,3", String.valueOf(data).trim());
