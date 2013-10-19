@@ -19,7 +19,7 @@ import java.io.Writer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SelectMRClusterTest extends MRClusterTestUtil {
+public class SelectionMRClusterTest extends MRClusterTestUtil {
   private static final Path INPUT = new Path("input");
   private static final Path JOB_OUTPUT = new Path("/tmp/job_output");
   private static final Path OUTPUT = new Path("output");

@@ -16,4 +16,16 @@ public final class Utils {
     }
     return result;
   }
+
+  public static void checkArgument(boolean assertion, String msg) throws IllegalArgumentException {
+    if (!assertion) {
+      throw new IllegalArgumentException(msg);
+    }
+  }
+
+  public static void checkState(boolean assertion, String msg) throws IllegalStateException {
+    if (!assertion) {
+      throw new IllegalStateException(msg);
+    }
+  }
 }

@@ -15,6 +15,8 @@ import org.apache.hadoop.util.ToolRunner;
 
 import pl.stupaq.hadoop.relational.selection.Predicate.Any;
 
+import java.util.Arrays;
+
 public class Selection implements Tool {
   static final String SELECTION_PREDICATE_CLASS_KEY = "relational.selection.predicate.class";
   private Configuration conf;
@@ -32,6 +34,7 @@ public class Selection implements Tool {
 
   @Override
   public int run(String[] args) throws Exception {
+    System.out.println(Arrays.asList(args).toString());
     // Parse arguments
     Path inputRelationPath = new Path(args[0]),
         outputRelationPath = new Path(args[1]);

@@ -1,12 +1,11 @@
 package pl.stupaq.hadoop.relational.selection;
 
-import com.google.common.base.Preconditions;
-
 import org.apache.hadoop.conf.Configurable;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
 
 import pl.stupaq.hadoop.relational.Tuple;
+import pl.stupaq.hadoop.relational.Utils;
 
 public interface Predicate {
   /** True if given tuple should be included in the result, false otherwise. */
@@ -38,7 +37,7 @@ public interface Predicate {
 
     @Override
     public void setup(Configuration conf, String[] args) {
-      Preconditions.checkArgument(args.length > 3, "Missing pattern tuple for Predicate::Equals");
+      Utils.checkArgument(args.length > 3, "Missing pattern tuple for Predicate::Equals");
       conf.set(Equals.PREDICATE_EQUALS_TUPLE, args[3]);
     }
 

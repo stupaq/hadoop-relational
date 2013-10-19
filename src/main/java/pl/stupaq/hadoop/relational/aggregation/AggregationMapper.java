@@ -1,7 +1,5 @@
 package pl.stupaq.hadoop.relational.aggregation;
 
-import com.google.common.base.Preconditions;
-
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -19,8 +17,7 @@ public class AggregationMapper extends Mapper<LongWritable, Text, Tuple, Tuple> 
   @Override
   protected void setup(Context context) throws IOException, InterruptedException {
     String joinKeyStr = context.getConfiguration().get(Aggregation.AGGREGATION_KEY_INDICES_KEY);
-    Preconditions
-        .checkState(joinKeyStr != null, Aggregation.AGGREGATION_KEY_INDICES_KEY + " is not set");
+    Utils.checkState(joinKeyStr != null, Aggregation.AGGREGATION_KEY_INDICES_KEY + " is not set");
     keyIndices = Collections.unmodifiableList(Utils.parseIntegers(joinKeyStr));
   }
 

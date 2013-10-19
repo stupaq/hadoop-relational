@@ -19,6 +19,7 @@ import pl.stupaq.hadoop.relational.Tuple;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Join implements Tool {
   private Configuration conf;
@@ -36,6 +37,7 @@ public class Join implements Tool {
 
   @Override
   public int run(String[] args) throws Exception {
+    System.out.println(Arrays.asList(args).toString());
     // Parse arguments
     Path leftRelationPath = new Path(args[0]),
         rightRelationPath = new Path(args[1]),

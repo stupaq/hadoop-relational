@@ -16,6 +16,8 @@ import org.apache.hadoop.util.ToolRunner;
 import pl.stupaq.hadoop.relational.Tuple;
 import pl.stupaq.hadoop.relational.aggregation.Aggregator.First;
 
+import java.util.Arrays;
+
 public class Aggregation implements Tool {
   static final String AGGREGATION_KEY_INDICES_KEY = "relational.aggregation.key_indices";
   static final String AGGREGATION_AGGREGATOR_CLASS_KEY = "relational.aggregation.aggregator.class";
@@ -34,6 +36,7 @@ public class Aggregation implements Tool {
 
   @Override
   public int run(String[] args) throws Exception {
+    System.out.println(Arrays.asList(args).toString());
     // Parse arguments
     Path inputRelationPath = new Path(args[0]),
         outputRelationPath = new Path(args[1]);

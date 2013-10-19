@@ -13,6 +13,8 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import java.util.Arrays;
+
 public class Union implements Tool {
   private Configuration conf;
 
@@ -29,6 +31,7 @@ public class Union implements Tool {
 
   @Override
   public int run(String[] args) throws Exception {
+    System.out.println(Arrays.asList(args).toString());
     // Parse arguments
     Path oneRelationPath = new Path(args[0]),
         twoRelationPath = new Path(args[1]),

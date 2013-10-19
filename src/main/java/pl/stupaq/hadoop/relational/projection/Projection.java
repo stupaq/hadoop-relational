@@ -12,6 +12,8 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import java.util.Arrays;
+
 public class Projection implements Tool {
   static final String PROJECT_INDICES_KEY = "relational.projection.indices";
   private Configuration conf;
@@ -29,6 +31,7 @@ public class Projection implements Tool {
 
   @Override
   public int run(String[] args) throws Exception {
+    System.out.println(Arrays.asList(args).toString());
     // Parse arguments
     Path inputRelationPath = new Path(args[0]),
         outputRelationPath = new Path(args[1]);

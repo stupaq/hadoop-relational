@@ -36,10 +36,12 @@ public abstract class MRClusterTestUtil {
     dfsCluster = new MiniDFSCluster(conf, 1, true, null);
     dfs = (DistributedFileSystem) dfsCluster.getFileSystem();
     mrCluster = new MiniMRCluster(1, dfs.getUri().toString(), 1);
+    LOG.info("Cluster set up finished");
   }
 
   @After
   public final void tearDownCluster() {
+    LOG.info("Cluster tear down started");
     IOUtils.cleanup(LOG, dfs);
     if (mrCluster != null) {
       mrCluster.shutdown();

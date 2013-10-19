@@ -30,7 +30,7 @@ public class JoinMRClusterTest extends MRClusterTestUtil {
       writer.write("1,2,3\n1,2,4\n2,3,4\n4,2,3");
     }
     try (Writer writer = new OutputStreamWriter(dfs.create(RIGHT))) {
-      writer.write("1,5,3\n1,2,7\n4,3,2");
+      writer.write("5,3,1\n2,7,1\n3,2,4");
     }
   }
 
@@ -38,7 +38,7 @@ public class JoinMRClusterTest extends MRClusterTestUtil {
   public void testRun() throws Exception {
     Configuration conf = mrCluster.createJobConf();
     String[] args =
-        new String[]{LEFT.toString(), RIGHT.toString(), JOB_OUTPUT.toString(), "0", "0"};
+        new String[]{LEFT.toString(), RIGHT.toString(), JOB_OUTPUT.toString(), "0", "2"};
     assertEquals("Job failed!", 0, ToolRunner.run(conf, new Join(), args));
     assertTrue(dfs.exists(JOB_OUTPUT));
     FileUtil.copyMerge(dfs, JOB_OUTPUT, dfs, OUTPUT, true, conf, null);
