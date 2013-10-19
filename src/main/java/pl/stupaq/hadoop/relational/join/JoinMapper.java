@@ -1,5 +1,7 @@
 package pl.stupaq.hadoop.relational.join;
 
+import com.google.common.base.Preconditions;
+
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -20,9 +22,7 @@ public abstract class JoinMapper extends Mapper<LongWritable, Text, Tuple, Marke
   protected final void setup(Context context) throws IllegalStateException {
     String key = getJoinKeyIndicesKey();
     String joinKeyStr = context.getConfiguration().get(key);
-    if (joinKeyStr == null) {
-      throw new IllegalStateException(key + " is not set");
-    }
+    Preconditions.checkState(joinKeyStr != null, key + " is not set");
     joinKeyIndices = Collections.unmodifiableList(Utils.parseIntegers(joinKeyStr));
   }
 
@@ -36,7 +36,7 @@ public abstract class JoinMapper extends Mapper<LongWritable, Text, Tuple, Marke
     context.write(reduceKey, new MarkedTuple(reduceValue, isLHS()));
   }
 
-  protected abstract String getJoinKeyIndicesKey();
-
   protected abstract boolean isLHS();
+
+  protected abstract String getJoinKeyIndicesKey();
 }
