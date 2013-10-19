@@ -1,4 +1,4 @@
-package pl.stupaq.hadoop.relational.join;
+package pl.stupaq.hadoop.relational;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,10 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import pl.stupaq.hadoop.relational.join.JoinMRClusterTest;
+
 import java.io.IOException;
 
 public abstract class MRClusterTestUtil {
-  protected static final Log LOG = LogFactory.getLog(JoinerMRClusterTest.class);
+  protected static final Log LOG = LogFactory.getLog(JoinMRClusterTest.class);
   protected DistributedFileSystem dfs;
   protected MiniMRCluster mrCluster;
   protected MiniDFSCluster dfsCluster;
