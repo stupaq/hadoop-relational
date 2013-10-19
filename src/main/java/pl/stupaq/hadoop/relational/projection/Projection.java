@@ -1,4 +1,4 @@
-package pl.stupaq.hadoop.relational.project;
+package pl.stupaq.hadoop.relational.projection;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -12,15 +12,15 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-public class Project implements Tool {
-  static final String PROJECT_INDICES_LEY = "relational.project.indices";
+public class Projection implements Tool {
+  static final String PROJECT_INDICES_KEY = "relational.projection.indices";
   private Configuration conf;
 
   public static void main(String[] args) throws Exception {
     try {
       Configuration conf = new Configuration();
       String[] remainingArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-      ToolRunner.run(conf, new Project(), remainingArgs);
+      ToolRunner.run(conf, new Projection(), remainingArgs);
     } catch (Throwable t) {
       System.err.println(StringUtils.stringifyException(t));
       throw t;
@@ -32,16 +32,16 @@ public class Project implements Tool {
     // Parse arguments
     Path inputRelationPath = new Path(args[0]),
         outputRelationPath = new Path(args[1]);
-    conf.set(PROJECT_INDICES_LEY, args[2]);
+    conf.set(PROJECT_INDICES_KEY, args[2]);
 
     // Setup job
     Job job = Job.getInstance(conf);
-    job.setJarByClass(Project.class);
+    job.setJarByClass(Projection.class);
 
     job.setInputFormatClass(TextInputFormat.class);
     TextInputFormat.addInputPath(job, inputRelationPath);
 
-    job.setMapperClass(ProjectMapper.class);
+    job.setMapperClass(ProjectionMapper.class);
     job.setMapOutputKeyClass(NullWritable.class);
     job.setMapOutputValueClass(Text.class);
 

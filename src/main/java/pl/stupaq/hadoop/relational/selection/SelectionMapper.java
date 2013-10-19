@@ -1,4 +1,4 @@
-package pl.stupaq.hadoop.relational.select;
+package pl.stupaq.hadoop.relational.selection;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.LongWritable;
@@ -8,18 +8,18 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.util.ReflectionUtils;
 
 import pl.stupaq.hadoop.relational.Tuple;
-import pl.stupaq.hadoop.relational.select.Predicate.Any;
+import pl.stupaq.hadoop.relational.selection.Predicate.Any;
 
 import java.io.IOException;
 
-public class SelectMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
+public class SelectionMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
   private Predicate predicate;
 
   @Override
   protected void setup(Context context) throws IOException, InterruptedException {
     Configuration conf = context.getConfiguration();
     Class<? extends Predicate> clazz =
-        conf.getClass(Select.SELECT_PREDICATE_CLASS_KEY, Any.class, Predicate.class);
+        conf.getClass(Selection.SELECTION_PREDICATE_CLASS_KEY, Any.class, Predicate.class);
     predicate = ReflectionUtils.newInstance(clazz, conf);
   }
 

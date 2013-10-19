@@ -1,4 +1,4 @@
-package pl.stupaq.hadoop.relational.select;
+package pl.stupaq.hadoop.relational.selection;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -13,17 +13,17 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-import pl.stupaq.hadoop.relational.select.Predicate.Any;
+import pl.stupaq.hadoop.relational.selection.Predicate.Any;
 
-public class Select implements Tool {
-  static final String SELECT_PREDICATE_CLASS_KEY = "relational.select.predicate.class";
+public class Selection implements Tool {
+  static final String SELECTION_PREDICATE_CLASS_KEY = "relational.selection.predicate.class";
   private Configuration conf;
 
   public static void main(String[] args) throws Exception {
     try {
       Configuration conf = new Configuration();
       String[] remainingArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
-      ToolRunner.run(conf, new Select(), remainingArgs);
+      ToolRunner.run(conf, new Selection(), remainingArgs);
     } catch (Throwable t) {
       System.err.println(StringUtils.stringifyException(t));
       throw t;
@@ -35,19 +35,19 @@ public class Select implements Tool {
     // Parse arguments
     Path inputRelationPath = new Path(args[0]),
         outputRelationPath = new Path(args[1]);
-    conf.set(SELECT_PREDICATE_CLASS_KEY, args[2]);
+    conf.set(SELECTION_PREDICATE_CLASS_KEY, args[2]);
     Class<? extends Predicate> clazz =
-        conf.getClass(Select.SELECT_PREDICATE_CLASS_KEY, Any.class, Predicate.class);
+        conf.getClass(Selection.SELECTION_PREDICATE_CLASS_KEY, Any.class, Predicate.class);
     ReflectionUtils.newInstance(clazz, null).setup(conf, args);
 
     // Setup job
     Job job = Job.getInstance(conf);
-    job.setJarByClass(Select.class);
+    job.setJarByClass(Selection.class);
 
     job.setInputFormatClass(TextInputFormat.class);
     TextInputFormat.addInputPath(job, inputRelationPath);
 
-    job.setMapperClass(SelectMapper.class);
+    job.setMapperClass(SelectionMapper.class);
     job.setMapOutputKeyClass(NullWritable.class);
     job.setMapOutputValueClass(Text.class);
 

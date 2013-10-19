@@ -1,4 +1,4 @@
-package pl.stupaq.hadoop.relational.select;
+package pl.stupaq.hadoop.relational.selection;
 
 import com.google.common.base.Preconditions;
 

@@ -1,4 +1,4 @@
-package pl.stupaq.hadoop.relational.project;
+package pl.stupaq.hadoop.relational.projection;
 
 import com.google.common.base.Preconditions;
 
@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class ProjectMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
+public class ProjectionMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
   protected List<Integer> projectionIndices;
 
   @Override
   protected void setup(Context context) throws IOException, InterruptedException {
-    String joinKeyStr = context.getConfiguration().get(Project.PROJECT_INDICES_LEY);
-    Preconditions.checkState(joinKeyStr != null, Project.PROJECT_INDICES_LEY + " is not set");
+    String joinKeyStr = context.getConfiguration().get(Projection.PROJECT_INDICES_KEY);
+    Preconditions.checkState(joinKeyStr != null, Projection.PROJECT_INDICES_KEY + " is not set");
     projectionIndices = Collections.unmodifiableList(Utils.parseIntegers(joinKeyStr));
   }
 
