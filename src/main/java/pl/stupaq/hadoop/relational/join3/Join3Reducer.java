@@ -53,21 +53,22 @@ public class Join3Reducer extends Reducer<ElementDescriptor, MarkedTuple, NullWr
           break;
       }
     }
-    LOG.debug("LHS");
+    // Debug information
+    LOG.info("LHS");
     for (Tuple tuple : lhsList) {
-      LOG.debug(tuple.toString());
+      LOG.info(tuple.toString());
     }
-    LOG.debug("MID");
+    LOG.info("MID");
     for (Tuple tuple : midList) {
-      LOG.debug(tuple.toString());
+      LOG.info(tuple.toString());
     }
-    LOG.debug("RHS");
+    LOG.info("RHS");
     for (Tuple tuple : rhsList) {
-      LOG.debug(tuple.toString());
+      LOG.info(tuple.toString());
     }
     // This join can be implemented in a more effective way, since we expect each reduce split to
     // be small it doesn't matter.
-    LOG.debug("RES");
+    LOG.info("RES");
     for (Tuple mid : midList) {
       // The convention here is that the set of vertices as defined by args[4] determines attributes
       // for left join, the rest of attributes are used for right join.
@@ -86,7 +87,7 @@ public class Join3Reducer extends Reducer<ElementDescriptor, MarkedTuple, NullWr
             Tuple result = new Tuple(lhsValue);
             result.append(mid);
             result.append(rhsValue);
-            LOG.debug(result.toString());
+            LOG.info(result.toString());
             context.write(NullWritable.get(), result.toText());
           }
         }

@@ -19,7 +19,7 @@ public class Join3Partitioner extends Partitioner<ElementDescriptor, MarkedTuple
   @Override
   public int getPartition(ElementDescriptor key, MarkedTuple value, int reducersCount) {
     int partition = (int) (key.i * reducersSquareRoot + key.j) % reducersCount;
-    LOG.debug("Key: " + key + " sent to partition: " + partition);
+    LOG.info("Key: " + key + " sent to partition: " + partition);
     return partition;
   }
 
