@@ -21,8 +21,17 @@ installation available to the user.
 
 Tested on Arch Linux installation with AUR package `hadoop`.
 
-Usage
------
+Usage and side notes
+--------------------
 
 Scripts under `bin/` are meant to serve as documentation.
 This is the right place to look for arguments explanation and other instructions.
+
+One note about specifying columns: when you define a key for join, (sub)set of
+columns for projection or aggregation, you should separate column indices
+(starting from zero) with a comma ','; no trailing or leading comma allowed.
+
+One tricky place is three-way-join since middle relation consists of two disjoint
+set of attributes, one of them being a key for left join and the other for right
+one. The convention here is that join indices for middle relation that you specify
+denote left join indices. Rest of the attributes form right join key.

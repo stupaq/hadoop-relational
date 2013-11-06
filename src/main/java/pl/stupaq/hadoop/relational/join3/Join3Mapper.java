@@ -56,7 +56,7 @@ public abstract class Join3Mapper
       reduceValue.fromText(value);
       // Determine join indices
       Tuple keyLeft = reduceValue.project(joinKeyIndices);
-      // This tuple must get to all reducers of the form (x, h(b)) for x in hash function's image
+      // This tuple must get to all reducers of the form (h(b), x) for x in hash function's image
       for (int i = 0; i < reducersSquareRoot; i++) {
         ElementDescriptor key = new ElementDescriptor(keyLeft.hashCode() % reducersSquareRoot, i);
         context.write(key, new MarkedTuple(reduceValue, OriginTable.LEFT));
@@ -104,7 +104,7 @@ public abstract class Join3Mapper
       reduceValue.fromText(value);
       // Determine join indices
       Tuple keyRight = reduceValue.project(joinKeyIndices);
-      // This tuple must get to all reducers of the form (h(c), x) for x in hash function's image
+      // This tuple must get to all reducers of the form (x, h(c)) for x in hash function's image
       for (int i = 0; i < reducersSquareRoot; i++) {
         ElementDescriptor key = new ElementDescriptor(i, keyRight.hashCode() % reducersSquareRoot);
         context.write(key, new MarkedTuple(reduceValue, OriginTable.RIGHT));
