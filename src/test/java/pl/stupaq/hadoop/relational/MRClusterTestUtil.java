@@ -23,7 +23,6 @@ public abstract class MRClusterTestUtil {
 
   @BeforeClass
   public static void setUpClusterClass() {
-    Logger.getRootLogger().setLevel(Level.DEBUG);
     String buildDir = System.getProperty("project.build.directory");
     if (buildDir == null) {
       buildDir = "build";
