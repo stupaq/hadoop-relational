@@ -18,6 +18,8 @@ public class Join3Partitioner extends Partitioner<ElementDescriptor, MarkedTuple
 
   @Override
   public int getPartition(ElementDescriptor key, MarkedTuple value, int reducersCount) {
+    // This ensures that in case reducersCount == reducersSquareRoot^2 then we get perfect
+    // distribution of keys. This is the default case if one uses Join3 job controller.
     int partition = (int) (key.i * reducersSquareRoot + key.j) % reducersCount;
     LOG.info("Key: " + key + " sent to partition: " + partition);
     return partition;

@@ -49,8 +49,8 @@ public class Join3 implements Tool {
         rightRelationPath = new Path(args[2]),
         outputRelationPath = new Path(args[3]);
     conf.set(new Join3MapperLeft().getJoinKeyIndicesKey(), args[4]);
-    // The convention here is that the set of vertices as defined by args[4] determines attributes
-    // for left join, the rest of attributes are used for right join.
+    // The convention here is that the list of columns as defined by middle join indices determines
+    // attributes for left join, the rest of attributes are used for right join.
     conf.set(new Join3MapperMiddle().getJoinKeyIndicesKey(), args[5]);
     conf.set(new Join3MapperRight().getJoinKeyIndicesKey(), args[6]);
     // Number of reducers is equal to this parameter squared

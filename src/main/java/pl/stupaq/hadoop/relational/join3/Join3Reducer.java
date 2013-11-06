@@ -40,6 +40,7 @@ public class Join3Reducer extends Reducer<ElementDescriptor, MarkedTuple, NullWr
       throws IOException, InterruptedException {
     List<Tuple> lhsList = new ArrayList<>(), rhsList = new ArrayList<>(), midList =
         new ArrayList<>();
+    // Split all tuples hashed to this reducer according to source tables
     for (MarkedTuple tuple : values) {
       switch (tuple.getOrigin()) {
         case LEFT:
@@ -66,28 +67,35 @@ public class Join3Reducer extends Reducer<ElementDescriptor, MarkedTuple, NullWr
     for (Tuple tuple : rhsList) {
       LOG.info(tuple.toString());
     }
-    // This join can be implemented in a more effective way, since we expect each reduce split to
+    // This is a simple 3-nested-loops join.
+    // This join can be implemented in a more efficient way, since we expect each reduce split to
     // be small it doesn't matter.
+    // Also the size of the output is \Omega(|input|^3) in pessimistic case.
     LOG.info("RES");
     for (Tuple mid : midList) {
-      // The convention here is that the set of vertices as defined by args[4] determines attributes
-      // for left join, the rest of attributes are used for right join.
+      // The convention here is that the list of columns as defined by middle join indices determines
+      // attributes for left join, the rest of attributes are used for right join.
       Tuple midKeyLeft = mid.project(middleJoinIndices);
       Tuple midKeyRight = mid.strip(middleJoinIndices);
       for (Tuple lhs : lhsList) {
         Tuple lhsKey = lhs.project(leftJoinIndices);
         Tuple lhsValue = lhs.strip(leftJoinIndices);
+        // Match left table join key with left join key of middle relation
         if (!midKeyLeft.equals(lhsKey)) {
           continue;
         }
         for (Tuple rhs : rhsList) {
           Tuple rhsKey = rhs.project(rightJoinIndices);
           Tuple rhsValue = rhs.strip(rightJoinIndices);
+          // Match right table join key with right join key of middle relation
           if (midKeyRight.equals(rhsKey)) {
             Tuple result = new Tuple(lhsValue);
             result.append(mid);
             result.append(rhsValue);
             LOG.info(result.toString());
+            // Output tuple is a concatenation of left, middle and right relations' tuples
+            // (in this order), we do skip repeated columns though, so that the only remaining
+            // join keys reside in 'middle' part of the output tuple.
             context.write(NullWritable.get(), result.toText());
           }
         }
