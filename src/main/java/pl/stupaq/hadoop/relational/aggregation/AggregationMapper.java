@@ -27,7 +27,7 @@ public class AggregationMapper extends Mapper<LongWritable, Text, Tuple, Tuple> 
     Tuple reduceValue = new Tuple();
     reduceValue.fromText(value);
     Tuple reduceKey = reduceValue.project(keyIndices);
-    reduceValue.strip(keyIndices);
+    reduceValue.stripInPlace(keyIndices);
     context.write(reduceKey, reduceValue);
   }
 }

@@ -32,7 +32,7 @@ public abstract class JoinMapper extends Mapper<LongWritable, Text, Tuple, Marke
     Tuple reduceValue = new Tuple();
     reduceValue.fromText(value);
     Tuple reduceKey = reduceValue.project(joinKeyIndices);
-    reduceValue.strip(joinKeyIndices);
+    reduceValue.stripInPlace(joinKeyIndices);
     context.write(reduceKey, new MarkedTuple(reduceValue, isLHS()));
   }
 

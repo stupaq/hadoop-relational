@@ -29,7 +29,13 @@ public class Tuple extends ArrayList<String> implements Writable, WritableCompar
     return result;
   }
 
-  public void strip(List<Integer> indices) {
+  public Tuple strip(List<Integer> indices) {
+    Tuple result = new Tuple(this);
+    result.stripInPlace(indices);
+    return result;
+  }
+
+  public void stripInPlace(List<Integer> indices) {
     boolean[] strip = new boolean[size()];
     for (Integer index : indices) {
       strip[index] = true;

@@ -7,22 +7,23 @@ import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.mapred.MiniMRCluster;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import pl.stupaq.hadoop.relational.join.JoinMRClusterTest;
-
 import java.io.IOException;
 
 public abstract class MRClusterTestUtil {
-  protected static final Log LOG = LogFactory.getLog(JoinMRClusterTest.class);
+  protected static final Log LOG = LogFactory.getLog(MRClusterTestUtil.class);
   protected DistributedFileSystem dfs;
   protected MiniMRCluster mrCluster;
   protected MiniDFSCluster dfsCluster;
 
   @BeforeClass
   public static void setUpClusterClass() {
+    Logger.getRootLogger().setLevel(Level.DEBUG);
     String buildDir = System.getProperty("project.build.directory");
     if (buildDir == null) {
       buildDir = "build";
@@ -49,5 +50,12 @@ public abstract class MRClusterTestUtil {
     if (dfsCluster != null) {
       dfsCluster.shutdown();
     }
+  }
+
+  protected Configuration createJobConf() {
+    Configuration conf = mrCluster.createJobConf();
+    conf.setInt("mapred.map.max.attempts", 1);
+    conf.setInt("mapred.reduce.max.attempts", 1);
+    return conf;
   }
 }
