@@ -61,6 +61,7 @@ public class Join3 implements Tool {
     Job job = Job.getInstance(conf);
     job.setJarByClass(Join3.class);
 
+    // We use separate mappers for each input relation
     MultipleInputs
         .addInputPath(job, leftRelationPath, TextInputFormat.class, Join3MapperLeft.class);
     MultipleInputs
@@ -99,6 +100,7 @@ public class Join3 implements Tool {
   static class ElementDescriptor implements Writable, WritableComparable<ElementDescriptor> {
     public long i, j;
 
+    @SuppressWarnings("unused")
     public ElementDescriptor() {
     }
 

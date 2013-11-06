@@ -32,7 +32,7 @@ public abstract class Join3Mapper
     Configuration conf = context.getConfiguration();
     joinKeyIndices = getJoinKeyIndices(conf, getJoinKeyIndicesKey());
     reducersSquareRoot = conf.getInt(Join3.JOIN_REDUCERS_SQUARE_ROOT_KEY, -1);
-    assert reducersSquareRoot > 0 : "Bad reducers count square root";
+    Utils.checkState(reducersSquareRoot > 0, "Bad reducers square root");
   }
 
   @Override
@@ -56,6 +56,7 @@ public abstract class Join3Mapper
       reduceValue.fromText(value);
       // Determine join indices
       Tuple keyLeft = reduceValue.project(joinKeyIndices);
+      // This tuple must get to all reducers of the form (x, h(b)) for x in hash function's image
       for (int i = 0; i < reducersSquareRoot; i++) {
         ElementDescriptor key = new ElementDescriptor(keyLeft.hashCode() % reducersSquareRoot, i);
         context.write(key, new MarkedTuple(reduceValue, OriginTable.LEFT));
@@ -81,6 +82,7 @@ public abstract class Join3Mapper
       // the rest of a tuple determines right join attributes.
       Tuple keyLeft = reduceValue.project(joinKeyIndices);
       Tuple keyRight = reduceValue.strip(joinKeyIndices);
+      // This tuple will get to a single reducer, write a single copy with key equal to (h(b), h(c))
       ElementDescriptor key = new ElementDescriptor(keyLeft.hashCode() % reducersSquareRoot,
                                                     keyRight.hashCode() % reducersSquareRoot);
       context.write(key, new MarkedTuple(reduceValue, OriginTable.MIDDLE));
@@ -102,6 +104,7 @@ public abstract class Join3Mapper
       reduceValue.fromText(value);
       // Determine join indices
       Tuple keyRight = reduceValue.project(joinKeyIndices);
+      // This tuple must get to all reducers of the form (h(c), x) for x in hash function's image
       for (int i = 0; i < reducersSquareRoot; i++) {
         ElementDescriptor key = new ElementDescriptor(i, keyRight.hashCode() % reducersSquareRoot);
         context.write(key, new MarkedTuple(reduceValue, OriginTable.RIGHT));

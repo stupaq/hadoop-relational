@@ -25,3 +25,4 @@ Usage
 -----
 
 Scripts under `bin/` are meant to serve as documentation.
+This is the right place to look for arguments explanation and other instructions.

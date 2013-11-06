@@ -7,6 +7,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.Partitioner;
 
 import pl.stupaq.hadoop.relational.MarkedTuple;
+import pl.stupaq.hadoop.relational.Utils;
 import pl.stupaq.hadoop.relational.join3.Join3.ElementDescriptor;
 
 public class Join3Partitioner extends Partitioner<ElementDescriptor, MarkedTuple>
@@ -31,6 +32,6 @@ public class Join3Partitioner extends Partitioner<ElementDescriptor, MarkedTuple
   public void setConf(Configuration conf) {
     this.conf = conf;
     this.reducersSquareRoot = this.conf.getInt(Join3.JOIN_REDUCERS_SQUARE_ROOT_KEY, -1);
-    assert this.reducersSquareRoot > 0 : "Bad reducers square root";
+    Utils.checkState(this.reducersSquareRoot > 0, "Bad reducers square root");
   }
 }
