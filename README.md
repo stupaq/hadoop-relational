@@ -1,5 +1,5 @@
- relational algebra implementation in Hadoop
-=============================================
+Relational algebra implementation in Hadoop
+===========================================
 
 Relation format
 ---------------
@@ -35,3 +35,5 @@ One tricky place is three-way-join since middle relation consists of two disjoin
 set of attributes, one of them being a key for left join and the other for right
 one. The convention here is that join indices for middle relation that you specify
 denote left join indices. Rest of the attributes form right join key.
+
+Copyright (c) 2014 Mateusz Machalica
